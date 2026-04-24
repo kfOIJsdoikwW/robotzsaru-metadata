@@ -1,0 +1,344 @@
+:root {
+    --police-blue: #00d4ff;
+    --dark-blue: #0a192f;
+    --error-red: #ff3b3b;
+    --bg-dark: #050a14;
+    --success-green: #00ff88;
+}
+
+/* GLOBÁLIS JAVÍTÁS: Ez megakadályozza, hogy bármi elcsússzon mobilon */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body { 
+    background-color: var(--bg-dark); 
+    color: var(--police-blue); 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    min-height: 100vh; 
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.dashboard { 
+    border: 1px solid var(--police-blue); 
+    background: rgba(0, 212, 255, 0.05);
+    padding: 40px; 
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.1); 
+    width: 100%; 
+    max-width: 800px; 
+    text-align: center;
+    border-radius: 5px;
+    position: relative;
+}
+
+h2 { text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid var(--police-blue); padding-bottom: 15px; margin-bottom: 10px; }
+
+/* AZ ÜGYIRATSZÁM MEZŐ FORMÁZÁSA */
+input { 
+    background: var(--dark-blue); 
+    border: 1px solid var(--police-blue); 
+    color: #ffffff; 
+    padding: 15px; 
+    width: 80%; /* Asztali nézeten marad a 80% */
+    max-width: 100%; /* Biztonsági korlát */
+    text-align: center; 
+    font-size: 1.1rem;
+    margin-bottom: 30px; 
+    outline: none;
+    display: inline-block;
+}
+
+button.main-btn { 
+    background: var(--police-blue); 
+    color: var(--bg-dark); 
+    border: none; 
+    padding: 15px 40px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    text-transform: uppercase;
+    width: 60%;
+    transition: 0.3s;
+}
+
+button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
+
+.hidden { display: none !important; }
+
+/* Rács és kártyák */
+.evidence-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px; 
+    text-align: left; 
+    margin-top: 30px;
+}
+
+.evidence-card { 
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-left: 4px solid var(--police-blue);
+}
+
+.profile-img {
+    width: 60px;
+    height: 60px;
+    border: 1px solid var(--police-blue);
+    float: right;
+    object-fit: cover;
+    background: #111;
+}
+
+.personal-info-details {
+    display: none;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    color: #ccc;
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+    padding-top: 10px;
+}
+
+.download-link { 
+    color: var(--police-blue); 
+    text-decoration: none; 
+    font-size: 0.8rem; 
+    font-weight: bold;
+    border: 1px solid var(--police-blue);
+    padding: 5px 10px;
+    display: inline-block;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* Galéria */
+.digital-evidence { grid-column: span 2; border: 1px dashed var(--police-blue); text-align: center; }
+.image-gallery { display: flex; justify-content: space-around; margin-top: 15px; gap: 10px; }
+.evidence-img { width: 30%; height: 100px; background: #111; border: 1px solid var(--police-blue); object-fit: cover; cursor: pointer; }
+
+.locked-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: var(--police-blue);
+    padding: 5px;
+    text-align: center;
+    border: 1px dashed var(--police-blue);
+}
+
+.chat-container {
+    margin-top: 20px;
+    border: 1px solid var(--error-red);
+    background: rgba(255, 0, 0, 0.05);
+    text-align: left;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.exit-container {
+    display: flex;
+    justify-content: center; /* Vízszintesen 100% középre tolja a tartalmát */
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    grid-column: 1 / -1; /* Ha a rácsban van, mindkét oszlopot átfogja */
+}
+
+.exit-btn {
+    background: none;
+    border: 1px solid gray;
+    color: gray;
+    padding: 12px 30px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.exit-btn:hover {
+    color: white;
+    border-color: white;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Suspects Szekció */
+.suspects-section { grid-column: span 2; border: 1px dashed var(--police-blue); text-align: center; }
+
+.suspects-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+}
+
+.suspect-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    padding: 10px;
+    width: 130px;
+    cursor: pointer;
+    transition: 0.3s;
+    animation: fadeUp 0.5s ease forwards;
+    opacity: 0;
+}
+
+.suspect-item:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--police-blue);
+    transform: translateY(-5px);
+}
+
+.suspect-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid var(--police-blue);
+    filter: grayscale(0.5) sepia(0.2) aqua;
+}
+
+.suspect-item h5 { font-size: 0.8rem; margin: 8px 0 2px; color: #fff; }
+.suspect-item p { font-size: 0.6rem; color: var(--police-blue); }
+
+/* Overlay / Modal Stílus */
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 5, 15, 0.95);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.overlay-content {
+    background: var(--bg-dark);
+    border: 1px solid var(--police-blue);
+    width: 90%;
+    max-width: 700px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.2);
+    animation: zoomIn 0.3s ease-out;
+}
+
+.overlay-body { display: flex; gap: 30px; }
+
+.large-profile-frame {
+    width: 200px;
+    height: 250px;
+    border: 2px solid var(--police-blue);
+    overflow: hidden;
+}
+
+.large-profile-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+.overlay-right { flex: 1; text-align: left; }
+
+.scroll-data {
+    margin-top: 15px;
+    height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+    font-size: 0.8rem;
+    color: #ccc;
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+    padding-top: 10px;
+}
+
+/* Egyedi görgetősáv */
+.scroll-data::-webkit-scrollbar { width: 5px; }
+.scroll-data::-webkit-scrollbar-thumb { background: var(--police-blue); }
+
+.close-overlay {
+    position: absolute;
+    top: 10px; right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--police-blue);
+}
+
+/* Animációk */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Reszponzivitás */
+@media (max-width: 600px) {
+    .overlay-body { flex-direction: column; align-items: center; }
+    .overlay-content { padding: 15px; top: 10px; max-height: 95vh; overflow-y: auto; }
+    .suspects-section { grid-column: span 1; }
+}
+
+/* Animációk */
+@keyframes load { 0% { width: 0%; } 100% { width: 100%; } }
+.loader-bar { width: 300px; max-width: 100%; height: 4px; background: #111; margin-top: 20px; overflow: hidden; display: inline-block;}
+.loader-progress { width: 0%; height: 100%; background: var(--police-blue); animation: load 2.5s ease-in-out forwards; }
+
+/* --- MOBIL SPECIFIKUS JAVÍTÁSOK --- */
+@media (max-width: 600px) {
+    .dashboard {
+        padding: 30px 15px; /* Kisebb belső margó, hogy elférjenek a dolgok */
+    }
+
+    h2 {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    input {
+        width: 95%; /* Mobilon majdnem teljes szélesség, de nem ér a széléhez */
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    button.main-btn {
+        width: 95%; /* A gomb is igazodik az inputhoz */
+        padding: 12px;
+    }
+
+    .evidence-grid {
+        grid-template-columns: 1fr; /* Egymás alá kerülnek a kártyák */
+    }
+
+    .digital-evidence {
+        grid-column: span 1;
+    }
+
+    .image-gallery {
+        flex-direction: row;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .evidence-img {
+        height: 70px; /* Kicsit kisebb képek mobilon */
+    }
+}
+
+.scroll-data {
+    margin-top: 15px;
+    max-height: 280px;   /* Maximum magasság. Ha ennél több a szöveg, bekapcsol a görgetés! */
+    overflow-y: auto;    /* Ez a parancs engedélyezi a függőleges görgetést */
+    padding-right: 15px; /* Helyet hagyunk a jobb oldalon a neon görgetősávnak */
+    font-size: 0.8rem;
+    line-height: 1.6;    /* Kicsit szellősebb, olvashatóbb sorköz */
+    color: #ccc;
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+    padding-top: 10px;
+}

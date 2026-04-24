@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.K.T.A. - Központi Adattár</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="main-container" class="dashboard">
+        
+        <div id="login-section">
+            <h2>ROBOTZSARU ADATTÁR</h2>
+            <p>A.K.T.A. Központi Bizonyítékkezelő v4.2</p>
+            <div id="status-msg">RENDSZER ONLINE</div>
+            <div>‎ </div>‎
+            <input type="text" id="access-code" placeholder="ADJA MEG AZ ÜGYIRATSZÁMOT" autocomplete="off">
+            <br>
+            <button class="main-btn" onclick="processLogin()">ADATOK LEKÉRÉSE</button>
+        </div>
+
+        <div id="loading-screen" class="hidden">
+            <h2 style="border:none;">HOZZÁFÉRÉS INICIALIZÁLÁSA...</h2>
+            <p>Személyazonosság ellenőrzése és fájlok dekódolása</p>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+
+        <div id="evidence-section" class="hidden">
+            <h2>HOZZÁFÉRÉS ENGEDÉLYEZVE</h2>
+            <p>Aktaszám: 05010/1142/2026.bü.</p>
+            
+            <div class="evidence-grid">
+                
+                <div class="evidence-card"> 
+                    <h4>Személyi adatok</h4>
+                    <p style="font-size: 0.7rem;">Horváth Jázmin | Aktív státusz</p>
+                    <div id="personal-data" class="personal-info-details">
+                        <b>Név:</b> Horváth Jázmin<br>
+                        <b>Szig szám:</b> 687420NN<br>
+                        <b>Lakcím:</b> 3530 Miskolc, Tompa Mihály utca 24 <br>
+                        <b>Anyja neve:</b> Horváth Anikó<br>
+                        <b>Születési hely, idő:</b> 2009.11.08.<br>
+                        <b>TAJ-szám:</b> 125 739 947<br>
+                        <b>Jogosítvány:</b> N/A<br>
+                        <b>Diák, OM kód:</b> Igen, 72687398235<br>
+                        <b>Adóazonosító jel:</b> 82320341789<br>
+                        <b>Kiemelt értékű anyagi tulajdon:</b> N/A<br>
+                        <b>Bűnügyi előélet:</b> N/A<br>
+                        <b>Vércsoport:</b> O+<br>
+                        <b>Fegyvertartási engedély:</b> N/A<br>
+                        <b>E-mail cím:</b>horvathjazmiin09@freemail.hu<br>
+                    </div>
+                    <span class="download-link" onclick="toggleDetails()">MEGTEKINTÉS</span>
+                </div>
+
+                <div class="evidence-card">
+                    <h4>Ambuláns lap</h4>
+                    <p style="font-size: 0.7rem;">Kelt: 2026.04.12. | Diagnózis: F13.1, F10.0</p>
+                    <a href="HJ_ambulans_lap.pdf" target="_blank" class="download-link">MEGTEKINTÉS</a>
+                </div>
+                
+                <div class="evidence-card">
+                    <h4>Rendőrségi jelentés</h4>
+                    <p style="font-size: 0.7rem;">Helyszíni szemle és intézkedési napló.</p>
+                    <a href="HJ_jelentes.pdf" target="_blank" class="download-link">MEGTEKINTÉS</a>
+                </div>
+
+                <div class="evidence-card">
+                    <h4>Toxikológiai jelentés</h4>
+                    <p style="font-size: 0.7rem;">Vérvétel eredmények: Benzodiazepin (980 ng/ml).</p>
+                    <a href="HJ_toxikologia.pdf" target="_blank" class="download-link">MEGTEKINTÉS</a>
+                </div>
+
+                <div class="evidence-card">
+                    <h4>Bankszámlakivonat</h4>
+                    <p style="font-size: 0.7rem;">Időszak: 2026.03.31 - 2026.04.31.</p>
+                    <a href="HJ_bankszamlakivonat.pdf" target="_blank" class="download-link">MEGTEKINTÉS</a>
+                </div>
+<div class="evidence-card metadata-section">
+    <h4>Digitális Metaadat Elemzés</h4>
+    <p style="font-size: 0.7rem; color: #aaa;">Képek rejtett EXIF és HEX adatainak kinyerése.</p>
+    
+    <input type="file" id="meta-upload" accept="image/*" class="hidden" onchange="handleFileUpload(event)">
+    
+    <span class="download-link" onclick="document.getElementById('meta-upload').click()">KÉP FELTÖLTÉSE / ELEMZÉS</span>
+
+    <div id="meta-status" style="margin-top: 10px; font-size: 0.75rem; font-weight: bold; min-height: 15px;"></div>
+</div>
+                <div class="evidence-card suspects-section">
+    <h4>Aktuális gyanúsítottak megtekintése</h4>
+    <p style="font-size: 0.7rem; color: #aaa;">Körözés alatt álló személyek adatbázisa.</p>
+    
+    <div id="suspects-list-container" class="hidden" style="margin-top: 15px;">
+        <div class="suspects-grid" id="suspects-grid">
+            </div>
+    </div>
+    <span class="download-link" onclick="toggleSuspects()">ADATBÁZIS MEGNYITÁSA</span>
+</div>
+
+<div id="suspect-overlay" class="overlay hidden">
+    <div class="overlay-content">
+        <span class="close-overlay" onclick="closeSuspectOverlay()">&times;</span>
+        <div class="overlay-body">
+            <div class="overlay-left">
+                <div class="large-profile-frame">
+                    <img id="overlay-img" src="" alt="Gyanúsított">
+                </div>
+                <h3 id="overlay-name" style="margin-top: 15px; color: var(--police-blue);"></h3>
+            </div>
+            <div class="overlay-right">
+                <h4>Bűnügyi Adatlap</h4>
+                <div class="scroll-data" id="overlay-data">
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="system-chat" class="chat-container hidden">
+    <div class="chat-header">RENDSZERÜZENETEK</div>
+    <div id="chat-message" class="chat-body"></div>
+            </div>
+            <div class="exit-container">
+                <button class="exit-btn" onclick="location.reload()">RENDSZER LEZÁRÁSA</button>
+            </div>
+        </div>
+    </div>
+
+<div id="meta-overlay" class="overlay hidden">
+    <div class="overlay-content">
+        <span class="close-overlay" onclick="closeMetaOverlay()">&times;</span>
+        <div class="overlay-body">
+            <div class="overlay-left">
+                <div class="large-profile-frame" style="border-color: var(--success-green);">
+                    <img id="meta-img-preview" src="" alt="Feltöltött bizonyíték">
+                </div>
+                <h3 style="margin-top: 15px; color: var(--success-green);">ELEMZÉS KÉSZ</h3>
+            </div>
+            <div class="overlay-right">
+                <h4>Kinyert Metaadatok</h4>
+                <div class="scroll-data" id="meta-data-content">
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
