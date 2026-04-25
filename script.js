@@ -29,28 +29,74 @@ function processLogin() {
     }
 }
 
+// --- EGYEDI MODAL KEZELŐ FÜGGVÉNYEK ---
+function showCustomModal(title, message, type, confirmCallback) {
+    const modal = document.getElementById('custom-modal');
+    const titleEl = document.getElementById('modal-title');
+    const messageEl = document.getElementById('modal-message');
+    const buttonsEl = document.getElementById('modal-buttons');
+    const modalBox = modal.querySelector('.modal-box');
+
+    titleEl.innerText = title;
+    // Kicseréljük a sortöréseket HTML <br> tagekre
+    messageEl.innerHTML = message.replace(/\n/g, '<br><br>'); 
+
+    if (type === 'warning') {
+        // Kék figyelmeztető ablak, Mégsem / Folytatás gombokkal
+        modalBox.classList.remove('modal-error');
+        modalBox.style.borderColor = "var(--police-blue)";
+        buttonsEl.innerHTML = `
+            <button class="modal-btn btn-cancel" onclick="closeCustomModal()">MÉGSEM</button>
+            <button class="modal-btn btn-confirm" id="modal-confirm-btn">FOLYTATÁS</button>
+        `;
+        // Ha a folytatásra kattint, lefut az a funkció, amit átadtunk (a jelszó felfedése)
+        document.getElementById('modal-confirm-btn').onclick = () => {
+            closeCustomModal();
+            if (confirmCallback) confirmCallback();
+        };
+    } else if (type === 'error') {
+        // Piros hibaablak, csak egy OK/TUDOMÁSUL VETTEM gombbal
+        modalBox.classList.add('modal-error');
+        modalBox.style.borderColor = "var(--police-red)";
+        modalBox.classList.add('error-shake'); // Meg is rázkódik
+        setTimeout(() => modalBox.classList.remove('error-shake'), 500);
+
+        buttonsEl.innerHTML = `
+            <button class="modal-btn btn-confirm" onclick="closeCustomModal()">TUDOMÁSUL VETTEM</button>
+        `;
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function closeCustomModal() {
+    document.getElementById('custom-modal').classList.add('hidden');
+}
+
+
+// --- AZ ÁTÍRT JELSZÓFELFEDŐ FÜGGVÉNY ---
 function viewPassword(element, platform) {
     if (platform === 'X') {
-        // Warning (figyelmeztetés) megjelenítése
-        const confirmView = confirm(
-            "BIZTONSÁGI FIGYELMEZTETÉS!\n\n" +
-            "Az X (Twitter) hozzáférési adatok megtekintése naplózásra kerül.\n" +
-            "Biztosan folytatni kívánja az érzékeny adat dekódolását?"
+        // Egyedi figyelmeztető modal meghívása
+        showCustomModal(
+            "BIZTONSÁGI FIGYELMEZTETÉS",
+            "Az X (Twitter) hozzáférési adatok megtekintése naplózásra kerül a szerveren.\nBiztosan folytatni kívánja az érzékeny adat dekódolását?",
+            "warning",
+            () => {
+                // Ez a rész csak akkor fut le, ha a "FOLYTATÁS" gombra kattint!
+                element.textContent = "JELSZÓ";
+                element.style.color = "var(--success-green)";
+                element.style.background = "rgba(0, 255, 136, 0.1)";
+                element.onclick = null; // Megakadályozza az újrakattintást
+                element.style.cursor = "default";
+            }
         );
-
-        if (confirmView) {
-            // Jelszó felfedése
-            element.textContent = "JazmIn_Priv_2026!";
-            element.style.color = "var(--success-green)";
-            element.style.background = "rgba(0, 255, 136, 0.1)";
-            element.onclick = null; // Megakadályozza az újrakattintást
-            element.style.cursor = "default";
-        }
     } else {
-        // Hibaüzenet minden más platform esetén
-        alert(
-            "RENDSZERÜZENET (Err. #0992):\n" +
-            "A kért platform jelszava nem található az A.K.T.A. központi adatbázisában."
+        // Egyedi piros hiba modal meghívása minden másnál
+        showCustomModal(
+            "RENDSZERÜZENET (Err. #0992)",
+            "A kért platform jelszava nem található az A.K.T.A. központi adatbázisában. Titkosítás feltörése sikertelen.",
+            "error"
         );
     }
 }
