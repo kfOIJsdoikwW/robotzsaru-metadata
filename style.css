@@ -168,6 +168,90 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
+/* --- EGYEDI FELUGRÓ ABLAK (MODAL) --- */
+.modal-box {
+    max-width: 450px;
+    text-align: center;
+    padding: 0; /* Paddinget a belső elemek kapnak */
+    overflow: hidden;
+}
+
+.modal-header {
+    background: rgba(0, 212, 255, 0.1);
+    padding: 15px;
+    border-bottom: 1px solid var(--police-blue);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--police-blue);
+    letter-spacing: 2px;
+}
+
+.modal-body {
+    padding: 25px 20px;
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.5;
+}
+
+.modal-footer {
+    display: flex;
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 15px;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-cancel {
+    border-right: 1px solid rgba(0, 212, 255, 0.2);
+    color: gray;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 0, 0, 0.1);
+    color: var(--police-red);
+}
+
+.btn-confirm {
+    color: var(--police-blue);
+}
+
+.btn-confirm:hover {
+    background: rgba(0, 212, 255, 0.2);
+    color: white;
+}
+
+/* Külön stílus a piros hibakódokhoz */
+.modal-error .modal-header {
+    background: rgba(211, 47, 47, 0.1);
+    border-bottom-color: var(--police-red);
+}
+
+.modal-error .modal-header h3 {
+    color: var(--police-red);
+}
+
+.modal-error .btn-confirm {
+    color: var(--police-red);
+}
+
+.modal-error .btn-confirm:hover {
+    background: rgba(211, 47, 47, 0.2);
+    color: white;
+}
+
 /* Suspects Szekció */
 .suspects-section { grid-column: span 2; border: 1px dashed var(--police-blue); text-align: center; }
 
