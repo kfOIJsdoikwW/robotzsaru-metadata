@@ -45,8 +45,8 @@ input {
     border: 1px solid var(--police-blue); 
     color: #ffffff; 
     padding: 15px; 
-    width: 80%; /* Asztali nézeten marad a 80% */
-    max-width: 100%; /* Biztonsági korlát */
+    width: 80%; 
+    max-width: 100%; 
     text-align: center; 
     font-size: 1.1rem;
     margin-bottom: 30px; 
@@ -142,12 +142,12 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
 
 .exit-container {
     display: flex;
-    justify-content: center; /* Vízszintesen 100% középre tolja a tartalmát */
+    justify-content: center; 
     align-items: center;
     width: 100%;
     margin-top: 30px;
     margin-bottom: 10px;
-    grid-column: 1 / -1; /* Ha a rácsban van, mindkét oszlopot átfogja */
+    grid-column: 1 / -1; 
 }
 
 .exit-btn {
@@ -172,7 +172,7 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
 .modal-box {
     max-width: 450px;
     text-align: center;
-    padding: 0; /* Paddinget a belső elemek kapnak */
+    padding: 0; 
     overflow: hidden;
 }
 
@@ -324,6 +324,9 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
     overflow: hidden;
 }
 
+.large-profile-frame img { width: 100%; height: 100%; object-fit: cover; }
+.overlay-right { flex: 1; text-align: left; }
+
 .social-item {
     margin-bottom: 5px;
     font-size: 0.75rem;
@@ -344,16 +347,13 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
     text-shadow: 0 0 5px var(--police-blue);
 }
 
-.large-profile-frame img { width: 100%; height: 100%; object-fit: cover; }
-
-.overlay-right { flex: 1; text-align: left; }
-
 .scroll-data {
     margin-top: 15px;
-    height: 200px;
-    overflow-y: auto;
-    padding-right: 10px;
+    max-height: 280px; 
+    overflow-y: auto; 
+    padding-right: 15px; 
     font-size: 0.8rem;
+    line-height: 1.6; 
     color: #ccc;
     border-top: 1px solid rgba(0, 212, 255, 0.2);
     padding-top: 10px;
@@ -373,17 +373,16 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
 
 /* --- TÖLTŐKÉPERNYŐ JAVÍTÁSA --- */
 #loading-screen {
-    display: flex !important;       /* Kényszerítjük a flex elrendezést */
-    flex-direction: column;         /* EGYMÁS ALÁ rendezi az elemeket (ez hiányzott vagy csúszott el) */
-    align-items: center;            /* Középre igazítja őket vízszintesen */
-    justify-content: center;        /* Középre igazítja őket függőlegesen */
+    display: flex !important;       
+    flex-direction: column;         
+    align-items: center;            
+    justify-content: center;        
     text-align: center;
     width: 100%;
-    min-height: 200px;              /* Adunk neki egy kis teret */
-    gap: 15px;                      /* Távolság a címsor, a szöveg és a csík között */
+    min-height: 200px;              
+    gap: 15px;                      
 }
 
-/* Ha a JS rejtett osztályt használ, azt továbbra is elrejtjük */
 #loading-screen.hidden {
     display: none !important;
 }
@@ -393,8 +392,9 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
     max-width: 300px; 
     height: 4px; 
     background: #111; 
-    margin-top: 10px; 
+    margin-top: 20px; 
     overflow: hidden; 
+    display: inline-block;
     border-radius: 2px;
 }
 
@@ -417,67 +417,57 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
     to { opacity: 1; transform: scale(1); }
 }
 
-/* Reszponzivitás */
-@media (max-width: 600px) {
-    .overlay-body { flex-direction: column; align-items: center; }
-    .overlay-content { padding: 15px; top: 10px; max-height: 95vh; overflow-y: auto; }
-    .suspects-section { grid-column: span 1; }
+@keyframes load { 
+    0% { width: 0%; } 
+    100% { width: 100%; } 
 }
 
-/* Animációk */
-@keyframes load { 0% { width: 0%; } 100% { width: 100%; } }
-.loader-bar { width: 300px; max-width: 100%; height: 4px; background: #111; margin-top: 20px; overflow: hidden; display: inline-block;}
-.loader-progress { width: 0%; height: 100%; background: var(--police-blue); animation: load 2.5s ease-in-out forwards; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+.error-shake { animation: shake 0.2s ease-in-out 0s 2; border-color: var(--error-red) !important; }
 
-/* --- MOBIL SPECIFIKUS JAVÍTÁSOK --- */
+/* --- MOBIL SPECIFIKUS JAVÍTÁSOK (Összevonva) --- */
 @media (max-width: 600px) {
     .dashboard {
-        padding: 30px 15px; /* Kisebb belső margó, hogy elférjenek a dolgok */
+        padding: 30px 15px; 
     }
-
     h2 {
         font-size: 1.2rem;
         letter-spacing: 1px;
     }
-
     input {
-        width: 95%; /* Mobilon majdnem teljes szélesség, de nem ér a széléhez */
+        width: 95%; 
         font-size: 1rem;
         padding: 12px;
     }
-
     button.main-btn {
-        width: 95%; /* A gomb is igazodik az inputhoz */
+        width: 95%; 
         padding: 12px;
     }
-
     .evidence-grid {
-        grid-template-columns: 1fr; /* Egymás alá kerülnek a kártyák */
+        grid-template-columns: 1fr; 
     }
-
     .digital-evidence {
         grid-column: span 1;
     }
-
     .image-gallery {
         flex-direction: row;
         justify-content: center;
         gap: 5px;
     }
-
     .evidence-img {
-        height: 70px; /* Kicsit kisebb képek mobilon */
+        height: 70px; 
     }
-}
-
-.scroll-data {
-    margin-top: 15px;
-    max-height: 280px;   /* Maximum magasság. Ha ennél több a szöveg, bekapcsol a görgetés! */
-    overflow-y: auto;    /* Ez a parancs engedélyezi a függőleges görgetést */
-    padding-right: 15px; /* Helyet hagyunk a jobb oldalon a neon görgetősávnak */
-    font-size: 0.8rem;
-    line-height: 1.6;    /* Kicsit szellősebb, olvashatóbb sorköz */
-    color: #ccc;
-    border-top: 1px solid rgba(0, 212, 255, 0.2);
-    padding-top: 10px;
+    .overlay-body { 
+        flex-direction: column; align-items: center; 
+    }
+    .overlay-content { 
+        padding: 15px; top: 10px; max-height: 95vh; overflow-y: auto; 
+    }
+    .suspects-section { 
+        grid-column: span 1; 
+    }
 }
