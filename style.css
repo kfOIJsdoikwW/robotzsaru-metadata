@@ -371,6 +371,41 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
     color: var(--police-blue);
 }
 
+/* --- TÖLTŐKÉPERNYŐ JAVÍTÁSA --- */
+#loading-screen {
+    display: flex !important;       /* Kényszerítjük a flex elrendezést */
+    flex-direction: column;         /* EGYMÁS ALÁ rendezi az elemeket (ez hiányzott vagy csúszott el) */
+    align-items: center;            /* Középre igazítja őket vízszintesen */
+    justify-content: center;        /* Középre igazítja őket függőlegesen */
+    text-align: center;
+    width: 100%;
+    min-height: 200px;              /* Adunk neki egy kis teret */
+    gap: 15px;                      /* Távolság a címsor, a szöveg és a csík között */
+}
+
+/* Ha a JS rejtett osztályt használ, azt továbbra is elrejtjük */
+#loading-screen.hidden {
+    display: none !important;
+}
+
+.loader-bar { 
+    width: 100%; 
+    max-width: 300px; 
+    height: 4px; 
+    background: #111; 
+    margin-top: 10px; 
+    overflow: hidden; 
+    border-radius: 2px;
+}
+
+.loader-progress { 
+    width: 0%; 
+    height: 100%; 
+    background: var(--police-blue); 
+    box-shadow: 0 0 10px var(--police-blue); 
+    animation: load 2.5s ease-in-out forwards; 
+}
+
 /* Animációk */
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
