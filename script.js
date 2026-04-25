@@ -38,27 +38,23 @@ function showCustomModal(title, message, type, confirmCallback) {
     const modalBox = modal.querySelector('.modal-box');
 
     titleEl.innerText = title;
-    // Kicseréljük a sortöréseket HTML <br> tagekre
     messageEl.innerHTML = message.replace(/\n/g, '<br><br>'); 
 
     if (type === 'warning') {
-        // Kék figyelmeztető ablak, Mégsem / Folytatás gombokkal
         modalBox.classList.remove('modal-error');
         modalBox.style.borderColor = "var(--police-blue)";
         buttonsEl.innerHTML = `
             <button class="modal-btn btn-cancel" onclick="closeCustomModal()">MÉGSEM</button>
             <button class="modal-btn btn-confirm" id="modal-confirm-btn">FOLYTATÁS</button>
         `;
-        // Ha a folytatásra kattint, lefut az a funkció, amit átadtunk (a jelszó felfedése)
         document.getElementById('modal-confirm-btn').onclick = () => {
             closeCustomModal();
             if (confirmCallback) confirmCallback();
         };
     } else if (type === 'error') {
-        // Piros hibaablak, csak egy OK/TUDOMÁSUL VETTEM gombbal
         modalBox.classList.add('modal-error');
         modalBox.style.borderColor = "var(--police-red)";
-        modalBox.classList.add('error-shake'); // Meg is rázkódik
+        modalBox.classList.add('error-shake'); 
         setTimeout(() => modalBox.classList.remove('error-shake'), 500);
 
         buttonsEl.innerHTML = `
@@ -73,26 +69,22 @@ function closeCustomModal() {
     document.getElementById('custom-modal').classList.add('hidden');
 }
 
-
 // --- AZ ÁTÍRT JELSZÓFELFEDŐ FÜGGVÉNY ---
 function viewPassword(element, platform) {
     if (platform === 'X') {
-        // Egyedi figyelmeztető modal meghívása
         showCustomModal(
             "BIZTONSÁGI FIGYELMEZTETÉS",
             "Az X (Twitter) hozzáférési adatok megtekintése naplózásra kerül a szerveren.\nBiztosan folytatni kívánja az érzékeny adat dekódolását?",
             "warning",
             () => {
-                // Ez a rész csak akkor fut le, ha a "FOLYTATÁS" gombra kattint!
                 element.textContent = "JELSZÓ";
                 element.style.color = "var(--success-green)";
                 element.style.background = "rgba(0, 255, 136, 0.1)";
-                element.onclick = null; // Megakadályozza az újrakattintást
+                element.onclick = null; 
                 element.style.cursor = "default";
             }
         );
     } else {
-        // Egyedi piros hiba modal meghívása minden másnál
         showCustomModal(
             "RENDSZERÜZENET (Err. #0992)",
             "A kért platform jelszava nem található az A.K.T.A. központi adatbázisában. Titkosítás feltörése sikertelen.",
@@ -118,23 +110,19 @@ function accessDenied() {
     const chatBox = document.getElementById('system-chat');
     const chatMsg = document.getElementById('chat-message');
 
-    // 1. Pirosra váltás
     lockedBox.style.borderColor = "var(--error-red)";
     lockedBox.style.color = "var(--error-red)";
     lockedBox.style.background = "rgba(255, 0, 0, 0.1)";
     evidenceTitle.style.color = "var(--error-red)";
     evidenceTitle.style.borderColor = "var(--error-red)";
 
-    // 2. Chatbox megjelenítése és üzenet beírása
     chatBox.classList.remove('hidden');
     chatMsg.innerText = "RENDSZERÜZENET: Jogosultság megtagadva! (Err. #0012)";
     chatMsg.style.color = "var(--error-red)";
 
-    // 3. Rázkódás
     container.classList.add('error-shake');
     setTimeout(() => container.classList.remove('error-shake'), 500);
 
-    // 4. Visszaállítás 3 másodperc múlva
     setTimeout(() => {
         lockedBox.style.borderColor = "var(--police-blue)";
         lockedBox.style.color = "var(--police-blue)";
@@ -161,7 +149,7 @@ function toggleSuspects() {
     const grid = document.getElementById('suspects-grid');
     
     if (container.classList.contains('hidden')) {
-        grid.innerHTML = ''; // Alaphelyzet
+        grid.innerHTML = ''; 
         suspectsData.forEach((s, index) => {
             const div = document.createElement('div');
             div.className = 'suspect-item';
@@ -185,7 +173,6 @@ function openSuspectOverlay(suspect) {
     document.getElementById('overlay-img').src = suspect.img;
     document.getElementById('overlay-name').innerText = suspect.name;
     
-    // Filler adatok generálása
     const fillerInfo = `
         <p><strong>Azonosító:</strong> ${suspect.id}</p>
         <p><strong>Születési dátum:</strong> ${suspect.dob}</p>
@@ -207,12 +194,7 @@ function closeSuspectOverlay() {
     document.getElementById('suspect-overlay').classList.add('hidden');
 }
 
-// A meglévő processLogin és egyéb függvények változatlanul maradnak...
-
 // --- METAADAT ELEMZŐ FUNKCIÓK ---
-
-// Itt adhatod meg, hogy milyen fájlnevet fogadjon el a rendszer.
-// Jelenleg minden fájlt elfogad, aminek a nevében benne van a "titkos" vagy "bizonyitek" szó.
 const ACCEPTED_KEYWORDS = ["titkos", "bizonyitek"];
 
 function handleFileUpload(event) {
@@ -222,29 +204,24 @@ function handleFileUpload(event) {
     const statusDiv = document.getElementById('meta-status');
     const card = event.target.closest('.evidence-card');
 
-    // Animált elemzés fázis
     statusDiv.innerText = "Fájl fogadva. EXIF olvasása...";
     statusDiv.style.color = "var(--police-blue)";
 
     setTimeout(() => {
         const fileNameLower = file.name.toLowerCase();
-        
-        // Ellenőrizzük, hogy a fájlnév tartalmazza-e az elvárt kulcsszavakat
         const isMatch = ACCEPTED_KEYWORDS.some(keyword => fileNameLower.includes(keyword));
 
         if (isMatch) {
-            // SIKERES ELEMZÉS
             statusDiv.innerText = "Egyezés! Rejtett adatok dekódolása...";
             statusDiv.style.color = "var(--success-green)";
             
             setTimeout(() => {
                 openMetaOverlay(file);
-                statusDiv.innerText = ""; // Töröljük a státuszt a következő alkalomra
-                event.target.value = ""; // Visszaállítjuk az inputot
+                statusDiv.innerText = ""; 
+                event.target.value = ""; 
             }, 1500);
 
         } else {
-            // HIBÁS FÁJL
             statusDiv.innerText = "HIBA: Ismeretlen vagy titkosítatlan fájl.";
             statusDiv.style.color = "var(--error-red)";
             card.classList.add('error-shake');
@@ -253,9 +230,9 @@ function handleFileUpload(event) {
                 card.classList.remove('error-shake');
             }, 500);
             
-            event.target.value = ""; // Visszaállítjuk az inputot
+            event.target.value = ""; 
         }
-    }, 1500); // 1.5 másodperc gondolkodási idő szimulálása
+    }, 1500); 
 }
 
 function openMetaOverlay(file) {
@@ -263,13 +240,9 @@ function openMetaOverlay(file) {
     const imgPreview = document.getElementById('meta-img-preview');
     const dataContent = document.getElementById('meta-data-content');
 
-    // Zseniális trükk: A feltöltött fájlt azonnal megmutatjuk a böngésző memóriájából!
     imgPreview.src = URL.createObjectURL(file);
-
-    // Kiszámoljuk a fájlméretet KB-ban, hogy még valósághűbb legyen
     const fileSizeKB = (file.size / 1024).toFixed(2);
 
-    // Filler adatok generálása
     dataContent.innerHTML = `
         <p><strong>Fájlnév:</strong> ${file.name}</p>
         <p><strong>Fájlméret:</strong> ${fileSizeKB} KB</p>
@@ -293,7 +266,6 @@ function openMetaOverlay(file) {
 function closeMetaOverlay() {
     document.getElementById('meta-overlay').classList.add('hidden');
     
-    // Memóriaszivárgás elkerülése: töröljük a generált URL-t
     const img = document.getElementById('meta-img-preview');
     if (img.src) {
         URL.revokeObjectURL(img.src);
