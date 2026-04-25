@@ -373,7 +373,7 @@ button.main-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
 
 /* --- TÖLTŐKÉPERNYŐ JAVÍTÁSA --- */
 #loading-screen {
-    display: flex !important;       
+    display: flex;                  /* KIVETTÜK AZ !important SZÓT! */
     flex-direction: column;         
     align-items: center;            
     justify-content: center;        
