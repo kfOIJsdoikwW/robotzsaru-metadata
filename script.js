@@ -1,4 +1,4 @@
-const VALID_CODE = "05010/1142/2026.bü.";
+const VALID_CODE = "01080/5521/2026.bü.";
 const DEBUG_CODE = "1";
 
 function processLogin() {
