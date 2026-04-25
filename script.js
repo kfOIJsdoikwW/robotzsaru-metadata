@@ -29,6 +29,32 @@ function processLogin() {
     }
 }
 
+function viewPassword(element, platform) {
+    if (platform === 'X') {
+        // Warning (figyelmeztetés) megjelenítése
+        const confirmView = confirm(
+            "BIZTONSÁGI FIGYELMEZTETÉS!\n\n" +
+            "Az X (Twitter) hozzáférési adatok megtekintése naplózásra kerül.\n" +
+            "Biztosan folytatni kívánja az érzékeny adat dekódolását?"
+        );
+
+        if (confirmView) {
+            // Jelszó felfedése
+            element.textContent = "JazmIn_Priv_2026!";
+            element.style.color = "var(--success-green)";
+            element.style.background = "rgba(0, 255, 136, 0.1)";
+            element.onclick = null; // Megakadályozza az újrakattintást
+            element.style.cursor = "default";
+        }
+    } else {
+        // Hibaüzenet minden más platform esetén
+        alert(
+            "RENDSZERÜZENET (Err. #0992):\n" +
+            "A kért platform jelszava nem található az A.K.T.A. központi adatbázisában."
+        );
+    }
+}
+
 function toggleDetails() {
     const details = document.getElementById('personal-data');
     details.style.display = (details.style.display === 'block') ? 'none' : 'block';
