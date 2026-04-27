@@ -78,7 +78,7 @@ function viewPassword(element, platform) {
             "Az X (Twitter) hozzáférési adatok megtekintése naplózásra kerül a szerveren.\nBiztosan folytatni kívánja az érzékeny adat dekódolását?",
             "warning",
             () => {
-                element.textContent = "JELSZÓ";
+                element.textContent = "Orvosleszekjanem22";
                 element.style.color = "var(--success-green)";
                 element.style.background = "rgba(0, 255, 136, 0.1)";
                 element.onclick = null; 
