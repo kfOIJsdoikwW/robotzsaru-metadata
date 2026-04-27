@@ -78,7 +78,7 @@ function viewPassword(element, platform) {
             "Az X (Twitter) hozzáférési adatok megtekintése naplózásra kerül a szerveren.\nBiztosan folytatni kívánja az érzékeny adat dekódolását?",
             "warning",
             () => {
-                element.textContent = "Orvosleszekjanem22";
+                element.textContent = "Orvosleszekjanem22 és (QXOOD, QXOOD, QXOOD, QXOOD)";
                 element.style.color = "var(--success-green)";
                 element.style.background = "rgba(0, 255, 136, 0.1)";
                 element.onclick = null; 
@@ -196,7 +196,7 @@ function closeSuspectOverlay() {
 }
 
 // --- METAADAT ELEMZŐ FUNKCIÓK ---
-const ACCEPTED_KEYWORDS = ["titkos", "bizonyitek"];
+const ACCEPTED_KEYWORDS = ["01k9t8y6eb8fbffygsr8"];
 
 function handleFileUpload(event) {
     const file = event.target.files[0];
