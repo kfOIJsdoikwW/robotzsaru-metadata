@@ -185,7 +185,7 @@ const suspectsData = [
         phoneImei: "358921128749001" // EZ MATCHEL A METAADATTAL!
     },
     { 
-        name: "Nagy Erzsébet", 
+        name: "Gucsek Martin", 
         dob: "2001.08.19.", 
         img: "gyan4.png", 
         id: "BK-5564",
