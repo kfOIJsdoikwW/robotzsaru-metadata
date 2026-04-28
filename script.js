@@ -274,7 +274,6 @@ function closeSuspectOverlay() {
 }
 
 // --- METAADAT ELEMZŐ FUNKCIÓK ---
-const ACCEPTED_KEYWORDS = ["01k9t8y6eb8fbffygsr8"];
 
 function handleFileUpload(event) {
     const file = event.target.files[0];
@@ -286,21 +285,44 @@ function handleFileUpload(event) {
     statusDiv.innerText = "Fájl fogadva. EXIF olvasása...";
     statusDiv.style.color = "var(--police-blue)";
 
-    setTimeout(() => {
-        const fileNameLower = file.name.toLowerCase();
-        const isMatch = ACCEPTED_KEYWORDS.some(keyword => fileNameLower.includes(keyword));
+    // A kép betöltése a memóriába a felbontás ellenőrzéséhez
+    const img = new Image();
+    img.onload = function() {
+        const width = this.width;
+        const height = this.height;
 
-        if (isMatch) {
-            statusDiv.innerText = "Egyezés! Rejtett adatok dekódolása...";
-            statusDiv.style.color = "var(--success-green)";
-            
-            setTimeout(() => {
-                openMetaOverlay(file);
-                statusDiv.innerText = ""; 
+        // Várakozás szimulálása a drámai hatás kedvéért
+        setTimeout(() => {
+            // Itt ellenőrizzük a pontos 1625x789-es felbontást
+            if (width === 1625 && height === 789) {
+                statusDiv.innerText = "Egyezés! Rejtett adatok dekódolása...";
+                statusDiv.style.color = "var(--success-green)";
+                
+                setTimeout(() => {
+                    openMetaOverlay(file);
+                    statusDiv.innerText = ""; 
+                    event.target.value = ""; 
+                }, 1500);
+
+            } else {
+                statusDiv.innerText = "HIBA: Ismeretlen vagy titkosítatlan fájl.";
+                statusDiv.style.color = "var(--error-red)";
+                card.classList.add('error-shake');
+                
+                setTimeout(() => {
+                    card.classList.remove('error-shake');
+                }, 500);
+                
                 event.target.value = ""; 
-            }, 1500);
+            }
+        }, 1500);
+        
+        URL.revokeObjectURL(this.src); // Memória felszabadítása
+    };
 
-        } else {
+    img.onerror = function() {
+        // Ha valaki nem képfájlt tölt fel (pl. PDF-et), azt is lekezeljük
+        setTimeout(() => {
             statusDiv.innerText = "HIBA: Ismeretlen vagy titkosítatlan fájl.";
             statusDiv.style.color = "var(--error-red)";
             card.classList.add('error-shake');
@@ -310,8 +332,11 @@ function handleFileUpload(event) {
             }, 500);
             
             event.target.value = ""; 
-        }
-    }, 1500); 
+        }, 1500);
+        URL.revokeObjectURL(this.src);
+    };
+
+    img.src = URL.createObjectURL(file);
 }
 
 function openMetaOverlay(file) {
